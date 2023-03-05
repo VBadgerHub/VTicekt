@@ -1,11 +1,9 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import allAppRoutes from './controllers/index.js'
   
 dotenv.config();
-
 const app: Express = express();
-
 
 const router = express.Router() 
 allAppRoutes.map(routes => routes(router))
