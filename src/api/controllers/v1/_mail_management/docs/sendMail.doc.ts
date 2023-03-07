@@ -1,7 +1,26 @@
 
 const sendMail = {
     tags: ["Mail"],
-    description: "Send mail",
+    description: "Send mail to Vorczu :)",
+    requestBody: {
+        content : {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        subject: {
+                            type: "string",
+                            example: "Hello form DOCS",
+                        },
+                        text: {
+                            type: "string",
+                            example: "Execute order 66",
+                        },
+                    }
+                }
+            }
+        }
+    },
     responses: {
         200: {
             description: "OK",
@@ -15,7 +34,7 @@ const sendMail = {
 
 
 export const sendMailDocs = {
-    "/sendMail" : { 
+    "sendMail" : { 
         post : sendMail
     }
 }

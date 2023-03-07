@@ -3,11 +3,12 @@ import { IMail } from "../../shared/types.js";
 import mailRepository from "../../Repositories/mailRepository.js";
 import { mailLogger } from "../../utils/logger.js";
 import { Request } from "express";
+import { MAIL_USER, MAIL_TARGET } from "../../shared/envConfigLoader.js";
 
 const mailCompose = (mailData : any) =>{
     const mail : IMail = {
-        from: mailData.from,
-        to: mailData.to,
+        from: MAIL_USER? MAIL_USER : '',
+        to: MAIL_TARGET? MAIL_TARGET : '',
         subject: mailData.subject,
         text: mailData.text,
     } 
@@ -18,6 +19,13 @@ const mailCompose = (mailData : any) =>{
 export const sendMail = async (mailOptions : Request ) =>{ 
     let mailToSend = mailCompose(mailOptions)
     mailLogger.info(`Mail Data: ${JSON.stringify(mailToSend)}}`)
+    if (typeof mailToSend.subject !== 'string') {
+        return {code: 400, msg: 'Bad value type'}
+    }
+
+    if (typeof mailToSend.text !== 'string') {
+        return {code: 400, msg: 'Bad value type'}
+    }
 
     try {
         let res = await mailer.sendMail(mailToSend);        
