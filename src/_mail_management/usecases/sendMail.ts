@@ -13,25 +13,27 @@ const mailCompose = (mailData : any) =>{
         text: mailData.text,
     } 
     return mail
-     
+      
 }
 
 export const sendMail = async (mailOptions : Request ) =>{ 
-    let mailToSend = mailCompose(mailOptions)
-    mailLogger.info(`Mail Data: ${JSON.stringify(mailToSend)}}`)
-    if (typeof mailToSend.subject !== 'string') {
-        return {code: 400, msg: 'Bad value type'}
+    if (Object.keys(mailOptions).length < 1) {
+        return {code: 400, msg: 'Empty or badly formatted object'}
     }
 
-    if (typeof mailToSend.text !== 'string') {
-        return {code: 400, msg: 'Bad value type'}
+    let mailToSend = mailCompose(mailOptions)
+    mailLogger.info(`Mail Data: ${JSON.stringify(mailToSend)}}`)
+
+    if (typeof mailToSend.subject !== 'string' || typeof mailToSend.text !== 'string') {
+        mailLogger.error(`Mail Error: ${JSON.stringify(mailToSend)} MSG: Wrong object property value type`)
+        return {code: 400, msg: 'Wrong object property value type'}
     }
 
     try {
         let res = await mailer.sendMail(mailToSend);        
         if (res) { await mailRepository.add(mailToSend, {info: res.messageId, error: null}) }
         mailLogger.info(`Mail Send: ${JSON.stringify(mailToSend)} ID: ${res.messageId}`)
-        return {code: 200, msg: 'Mail send'}
+        return {code: 200, msg: 'Mail sent'}
 
     } catch (error) {
         
