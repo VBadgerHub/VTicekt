@@ -35,10 +35,10 @@ describe("MAILER TEST", () =>{
         expect(resp.text).toContain('Empty or badly formatted object')  
     })
 
-    it("[No string type] should respond with a 400 status code", async () => {
+    it("[No string type in object] should respond with a 400 status code", async () => {
         let resp = await supertest(app).post("/api/v1/sendMail").send({
             subject: 3,
-            text: true,
+            text: '',
         })        
         expect(resp.statusCode).toBe(400)
         expect(resp.text).toContain('Wrong object property value type')  

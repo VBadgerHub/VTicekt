@@ -34,7 +34,7 @@ const sendMail = {
 
 
 export const sendMailDocs = {
-    "sendMail" : { 
+    "/sendMail" : { 
         post : sendMail
     }
 }
