@@ -1,5 +1,5 @@
-import registerAppOwnerRoutes from './app_owner_management/routes.js'
+import registerMailerRoutes from './_mail_management/routes.js'
 
 export default [
-    registerAppOwnerRoutes,
+    registerMailerRoutes,
 ]
